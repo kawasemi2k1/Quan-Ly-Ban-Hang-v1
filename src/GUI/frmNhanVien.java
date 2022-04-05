@@ -1,0 +1,755 @@
+// thoát
+package GUI;
+
+import OBJ.NhanVien;
+import Utils.ValidateData;
+// import com.sun.deploy.uitoolkit.impl.fx.ui.FXUIFactory; // vừa chú thích
+import java.awt.Window;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author ADMIN
+ */
+public class frmNhanVien extends javax.swing.JPanel {
+
+    private DefaultTableModel defaultTableModel;
+    ValidateData validate = new ValidateData();
+    NhanVien nv = new NhanVien();
+    static ArrayList<NhanVien> listNV = new ArrayList<>();
+
+    /**
+     * Creates new form frmNhanVien
+     */
+    public frmNhanVien() {
+        initComponents();
+        loadFile();
+        getData(listNV);
+    }
+
+    public NhanVien getNameByCode(String maNV) {
+        for (int i = 0; i < listNV.size(); i++) {
+            if (maNV.equals(listNV.get(i).getMaNhanVien())) {
+                return listNV.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void loadFile() {
+        try {
+            BufferedReader br = null;
+            FileReader fr = null;
+            listNV = new ArrayList<>(); //lưu ý
+            fr = new FileReader("nhanvien.txt");
+            br = new BufferedReader(fr);
+            String s = null;
+
+            try {
+                while ((s = br.readLine()) != null) {
+                    //Cắt chuỗi:
+                    String arr[] = s.split("\t");
+                    //Khởi tạo
+                    NhanVien nv = new NhanVien();
+                    nv.setMaNhanVien(arr[0]);
+                    nv.setHoTen(arr[1]);
+                    nv.setSoDienThoai(arr[2]);
+                    nv.setEmail(arr[3]);
+                    nv.setMatKhau(arr[4]);
+                    nv.setNhom(Integer.parseInt(arr[5]));
+                    nv.setGioiTinh(arr[6]);
+                    nv.setTrangThai(Integer.parseInt(arr[7]));
+                    listNV.add(nv);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(frmNhanVienTemplate.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(frmNhanVienTemplate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void saveFile() {
+
+        try {
+            BufferedWriter bw = null; //Khởi tạo
+            FileWriter fw = null; //Khởi tạo
+            String data = ""; //Tạo một string data bằng rỗng.
+            for (int i = 0; i < listNV.size(); i++) {
+                String row = ""; //tạo hàng rỗng
+                row = row + listNV.get(i).getMaNhanVien() + "\t";
+                row = row + listNV.get(i).getHoTen() + "\t";
+                row = row + listNV.get(i).getSoDienThoai() + "\t";
+                row = row + listNV.get(i).getEmail() + "\t";
+                row = row + listNV.get(i).getMatKhau() + "\t";
+                row = row + listNV.get(i).getNhom() + "\t";
+                row = row + listNV.get(i).getGioiTinh() + "\t";
+                row = row + listNV.get(i).getTrangThai() + "\n";
+                data += row;
+            }
+            fw = new FileWriter("nhanvien.txt");
+            bw = new BufferedWriter(fw);
+            bw.write(data);
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(frmNhanVienTemplate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private void getData(ArrayList<NhanVien> listNV) {
+        defaultTableModel = new DefaultTableModel();
+        defaultTableModel.addColumn("Mã NV");
+        defaultTableModel.addColumn("Họ tên NV");
+        defaultTableModel.addColumn("Giới tính");
+        defaultTableModel.addColumn("Email");
+        defaultTableModel.addColumn("SĐT");
+        defaultTableModel.addColumn("Nhóm");
+        defaultTableModel.addColumn("Trạng Thái");
+
+        for (NhanVien obj : listNV) {
+            Vector vector = new Vector();
+            vector.add(obj.getMaNhanVien());
+            vector.add(obj.getHoTen());
+            vector.add(obj.getGioiTinh());
+            vector.add(obj.getEmail());
+            vector.add(obj.getSoDienThoai());
+            vector.add(obj.getNhom() == 1 ? "Quản lý" : "Nhân viên");
+            vector.add(obj.getTrangThai() == 1 ? "Hoạt động" : "Đã khóa");
+            defaultTableModel.addRow(vector);
+        }
+        tbl_nhanvien.setModel(defaultTableModel);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_nhanvien = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txt_maNhanVien = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txt_hoTen = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txt_email = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txt_nhom = new javax.swing.JComboBox<>();
+        btn_them = new javax.swing.JButton();
+        btn_sua = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        btn_xoa = new javax.swing.JButton();
+        txt_tuKhoa = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txt_sdt = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        txt_gioiTinh = new javax.swing.JComboBox<>();
+        txt_trangThai = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        txt_matKhau = new javax.swing.JPasswordField();
+        jLabel10 = new javax.swing.JLabel();
+        vd_maNV = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+
+        setLayout(null);
+
+        tbl_nhanvien.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tbl_nhanvien.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_nhanvienMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_nhanvien);
+
+        add(jScrollPane1);
+        jScrollPane1.setBounds(50, 270, 1096, 408);
+        add(jLabel1);
+        jLabel1.setBounds(118, 40, 0, 0);
+
+        jLabel2.setForeground(new java.awt.Color(255, 51, 255));
+        jLabel2.setText("Mã NV");
+        add(jLabel2);
+        jLabel2.setBounds(52, 33, 59, 30);
+
+        txt_maNhanVien.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                txt_maNhanVienComponentShown(evt);
+            }
+        });
+        txt_maNhanVien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_maNhanVienActionPerformed(evt);
+            }
+        });
+        txt_maNhanVien.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_maNhanVienKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_maNhanVienKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_maNhanVienKeyTyped(evt);
+            }
+        });
+        add(txt_maNhanVien);
+        txt_maNhanVien.setBounds(136, 37, 148, 22);
+
+        jLabel3.setForeground(new java.awt.Color(255, 51, 255));
+        jLabel3.setText("Họ tên");
+        add(jLabel3);
+        jLabel3.setBounds(52, 76, 36, 16);
+
+        txt_hoTen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_hoTenActionPerformed(evt);
+            }
+        });
+        txt_hoTen.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_hoTenKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_hoTenKeyReleased(evt);
+            }
+        });
+        add(txt_hoTen);
+        txt_hoTen.setBounds(136, 75, 148, 22);
+
+        jLabel4.setForeground(new java.awt.Color(255, 51, 255));
+        jLabel4.setText("Email");
+        add(jLabel4);
+        jLabel4.setBounds(53, 160, 51, 16);
+
+        txt_email.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_emailActionPerformed(evt);
+            }
+        });
+        txt_email.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_emailKeyPressed(evt);
+            }
+        });
+        add(txt_email);
+        txt_email.setBounds(136, 157, 148, 22);
+
+        jLabel5.setText("Nhóm");
+        add(jLabel5);
+        jLabel5.setBounds(379, 121, 70, 16);
+
+        txt_nhom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quản Lý", "Nhân Viên" }));
+        add(txt_nhom);
+        txt_nhom.setBounds(485, 117, 150, 22);
+
+        btn_them.setForeground(new java.awt.Color(0, 0, 255));
+        btn_them.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        btn_them.setText("Thêm");
+        btn_them.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_themActionPerformed(evt);
+            }
+        });
+        add(btn_them);
+        btn_them.setBounds(775, 114, 83, 25);
+
+        btn_sua.setForeground(new java.awt.Color(0, 0, 255));
+        btn_sua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
+        btn_sua.setText("Sửa");
+        btn_sua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_suaActionPerformed(evt);
+            }
+        });
+        add(btn_sua);
+        btn_sua.setBounds(925, 109, 85, 30);
+
+        jButton1.setForeground(new java.awt.Color(0, 51, 255));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.png"))); // NOI18N
+        jButton1.setText("Thoát");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        add(jButton1);
+        jButton1.setBounds(925, 157, 83, 25);
+
+        btn_xoa.setForeground(new java.awt.Color(0, 0, 255));
+        btn_xoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
+        btn_xoa.setText("Xóa");
+        btn_xoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_xoaActionPerformed(evt);
+            }
+        });
+        add(btn_xoa);
+        btn_xoa.setBounds(775, 157, 85, 25);
+
+        txt_tuKhoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_tuKhoaActionPerformed(evt);
+            }
+        });
+        txt_tuKhoa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_tuKhoaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_tuKhoaKeyReleased(evt);
+            }
+        });
+        add(txt_tuKhoa);
+        txt_tuKhoa.setBounds(775, 70, 252, 22);
+
+        jLabel6.setForeground(new java.awt.Color(255, 0, 255));
+        jLabel6.setText("Số điện thoại");
+        add(jLabel6);
+        jLabel6.setBounds(43, 118, 69, 16);
+
+        txt_sdt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_sdtActionPerformed(evt);
+            }
+        });
+        txt_sdt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_sdtKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_sdtKeyReleased(evt);
+            }
+        });
+        add(txt_sdt);
+        txt_sdt.setBounds(136, 115, 148, 22);
+
+        jLabel8.setText("Giới Tính");
+        add(jLabel8);
+        jLabel8.setBounds(381, 83, 47, 16);
+
+        jLabel9.setText("Trạng thái");
+        add(jLabel9);
+        jLabel9.setBounds(381, 160, 53, 16);
+
+        txt_gioiTinh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ", "Khác" }));
+        add(txt_gioiTinh);
+        txt_gioiTinh.setBounds(485, 80, 80, 20);
+
+        txt_trangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hoạt động", "Đã khóa" }));
+        txt_trangThai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_trangThaiActionPerformed(evt);
+            }
+        });
+        add(txt_trangThai);
+        txt_trangThai.setBounds(485, 157, 150, 22);
+
+        jLabel7.setText("Mật Khẩu");
+        add(jLabel7);
+        jLabel7.setBounds(381, 44, 75, 16);
+        add(txt_matKhau);
+        txt_matKhau.setBounds(485, 41, 148, 22);
+
+        jLabel10.setBackground(new java.awt.Color(102, 255, 0));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Search.png"))); // NOI18N
+        jLabel10.setText("Tìm Kiếm");
+        add(jLabel10);
+        jLabel10.setBounds(775, 43, 81, 17);
+
+        vd_maNV.setForeground(new java.awt.Color(255, 0, 0));
+        add(vd_maNV);
+        vd_maNV.setBounds(136, 70, 0, 0);
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1520222086640.jpg"))); // NOI18N
+        jLabel11.setText("jLabel11");
+        add(jLabel11);
+        jLabel11.setBounds(0, 0, 1150, 690);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JComponent comp = (JComponent) evt.getSource();
+        Window win = SwingUtilities.getWindowAncestor(comp);
+        win.dispose();
+        frmMain main = new frmMain();
+        main.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txt_tuKhoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_tuKhoaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_tuKhoaActionPerformed
+
+    private void txt_tuKhoaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_tuKhoaKeyPressed
+
+    }//GEN-LAST:event_txt_tuKhoaKeyPressed
+
+    private void txt_tuKhoaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_tuKhoaKeyReleased
+        // cais nayf moinddung
+        String tuKhoa = txt_tuKhoa.getText();
+        if (tuKhoa.equals("")) {
+            getData(listNV);
+        } else {
+            ArrayList<NhanVien> listTimKiem = new ArrayList<>();
+            for (int i = 0; i < listNV.size(); i++) {
+                if (listNV.get(i).getMaNhanVien().contains(tuKhoa) || listNV.get(i).getSoDienThoai().contains(tuKhoa) || listNV.get(i).getEmail().contains(tuKhoa)) {
+                    listTimKiem.add(listNV.get(i));
+                }
+            }
+            getData(listTimKiem);
+        }
+    }//GEN-LAST:event_txt_tuKhoaKeyReleased
+
+    private void btn_themActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_themActionPerformed
+        String maNhanVien = txt_maNhanVien.getText();
+        String hoTen = txt_hoTen.getText();
+        String sdt = txt_sdt.getText();
+        String email = txt_email.getText();
+        String matKhau = txt_matKhau.getText();
+        String gioiTinh = "";
+        if (txt_gioiTinh.getSelectedItem().equals("Nam")) {
+            gioiTinh = "Nam";
+        } else if (txt_gioiTinh.getSelectedItem().equals("Nữ")) {
+            gioiTinh = "Nữ";
+        } else {
+            gioiTinh = "Khác";
+        }
+        int nhom = 0;
+        if (txt_nhom.getSelectedItem().toString().equals("Quản lý")) {
+            nhom = 1;
+        } else {
+            nhom = 0;
+        }
+        int trangThai;
+        if (txt_trangThai.getSelectedItem().toString().equals("Hoạt động")) {
+            trangThai = 1;
+        } else {
+            trangThai = 0;
+        }
+        if (maNhanVien.equals("")) {
+            JOptionPane.showMessageDialog(this, "Mã nhân viên không được để trống");
+            return;
+        } else if (!kiemTraMaNV(maNhanVien)) {
+            vd_maNV.setText("Mã nhân viên đã tòn tại");
+            return;
+        }
+        if (hoTen.equals("")) {
+            JOptionPane.showMessageDialog(this, "Họ tên không được để trông");
+            return;
+        } else if (!validate.kiemTraTen(txt_hoTen.getText())) {
+            JOptionPane.showMessageDialog(this, "Tên không được chứa số!");
+            return;
+        }
+        if (email.equals("")) {
+            JOptionPane.showMessageDialog(this, "Ko được bỏ trống email");
+            return;
+        } else if (!validate.kiemTraEmail(txt_email.getText())) {
+            JOptionPane.showMessageDialog(this, "Không đúng định dạng email");
+            return;
+        }
+        if (sdt.equals("")) {
+            JOptionPane.showMessageDialog(this, "SDT không được để trống");
+            return;
+        } else if (!validate.kiemTraSDT(sdt).equals("")) {
+            JOptionPane.showMessageDialog(this, validate.kiemTraSDT(sdt));
+            return;
+
+        }
+
+        NhanVien nv = new NhanVien();
+        nv.setMaNhanVien(maNhanVien);
+        nv.setHoTen(hoTen);
+        nv.setSoDienThoai(sdt);
+        nv.setEmail(email);
+        nv.setGioiTinh(gioiTinh);
+        nv.setNhom(nhom);
+        nv.setTrangThai(trangThai);
+        nv.setMatKhau(validate.md5(matKhau));
+        listNV.add(nv);
+        saveFile();
+        getData(listNV);
+        JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công");
+        reset();
+
+    }//GEN-LAST:event_btn_themActionPerformed
+
+    public void reset() {
+        txt_email.setText("");
+        txt_hoTen.setText("");
+        txt_maNhanVien.setText("");
+        txt_matKhau.setText("");
+        txt_nhom.setSelectedIndex(0);
+        txt_sdt.setText("");
+        txt_trangThai.setSelectedIndex(0);
+        txt_gioiTinh.setSelectedIndex(0);
+        btn_sua.setEnabled(true);
+        btn_them.setEnabled(true);
+        btn_xoa.setEnabled(true);
+        txt_maNhanVien.setEnabled(true);
+        txt_matKhau.setEnabled(true);
+        getData(listNV);
+
+    }
+
+    private void txt_trangThaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_trangThaiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_trangThaiActionPerformed
+
+    public boolean kiemTraMaNV(String ma) {
+        for (int i = 0; i < listNV.size(); i++) {
+            if (listNV.get(i).getMaNhanVien().equals(ma)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void txt_maNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_maNhanVienActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_maNhanVienActionPerformed
+
+    private void txt_maNhanVienKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_maNhanVienKeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txt_maNhanVienKeyReleased
+
+    private void txt_maNhanVienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_maNhanVienKeyPressed
+        // TODO add your handling code here:
+//        String ma = txt_maNhanVien.getText();
+//        if(!kiemTraMaNV(ma)){
+//            JOptionPane.showMessageDialog(this, "Mã nhân viên này tồn tại");
+//            txt_maNhanVien.setText("");
+//        } 
+//        
+    }//GEN-LAST:event_txt_maNhanVienKeyPressed
+
+    private void txt_maNhanVienKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_maNhanVienKeyTyped
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txt_maNhanVienKeyTyped
+
+    private void txt_maNhanVienComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_txt_maNhanVienComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_maNhanVienComponentShown
+
+    private void txt_hoTenKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_hoTenKeyReleased
+        // TODO add your handling code here:
+//        if(!validate.kiemTraTen(txt_hoTen.getText())){
+//            JOptionPane.showMessageDialog(this, "Tên không được chứa số");
+//        }
+//        txt_hoTen.setText("");
+    }//GEN-LAST:event_txt_hoTenKeyReleased
+
+    private void txt_sdtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_sdtKeyReleased
+        // TODO add your handling code here:
+//        validate.kiemTraSDT(txt_sdt.getText());
+    }//GEN-LAST:event_txt_sdtKeyReleased
+
+    private void txt_emailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_emailKeyPressed
+        // TODO add your handling code here:
+//        if (!validate.kiemTraEmail(txt_email.getText())) {
+//            JOptionPane.showMessageDialog(this, "Không đúng định dạng email");
+//        }
+
+    }//GEN-LAST:event_txt_emailKeyPressed
+
+    private void txt_hoTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_hoTenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_hoTenActionPerformed
+
+    private void txt_hoTenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_hoTenKeyPressed
+        // TODO add your handling code here:
+        if (!validate.kiemTraTen(txt_hoTen.getText())) {
+            JOptionPane.showMessageDialog(this, "Tên không được chứa số!");
+        }
+    }//GEN-LAST:event_txt_hoTenKeyPressed
+
+    private void txt_sdtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_sdtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_sdtActionPerformed
+
+    private void txt_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_emailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_emailActionPerformed
+
+    private void txt_sdtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_sdtKeyPressed
+        // TODO add your handling code here:
+        // validate.kiemTraSDT(txt_sdt.getText());
+    }//GEN-LAST:event_txt_sdtKeyPressed
+
+    int index = -1;
+    private void tbl_nhanvienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_nhanvienMouseClicked
+        // TODO add your handling code here:
+        int row = tbl_nhanvien.getSelectedRow();
+        String maNV = tbl_nhanvien.getValueAt(row, 0).toString();
+        //  tbl_nhanvien.getValueAt(row, 0);
+        for (int i = 0; i < listNV.size(); i++) {
+            if (maNV.equals(listNV.get(i).getMaNhanVien())) {
+                nv = listNV.get(i);
+                index = i;
+                break;
+            }
+        }
+        txt_maNhanVien.setEnabled(false);
+        txt_maNhanVien.setText(nv.getMaNhanVien());
+        txt_hoTen.setText(nv.getHoTen());
+        txt_email.setText(nv.getEmail());
+
+        txt_gioiTinh.setSelectedItem(nv.getGioiTinh());
+        txt_sdt.setText(nv.getSoDienThoai());
+        txt_matKhau.setText(nv.getMatKhau());
+        txt_matKhau.setEnabled(false);
+        if (nv.getNhom() == 1) {
+            txt_nhom.setSelectedItem("Quản Lý");
+        } else {
+            txt_nhom.setSelectedItem("Nhân Viên");
+
+        }
+        if (nv.getTrangThai() == 1) {
+            txt_trangThai.setSelectedItem("Hoạt động");
+        } else {
+            txt_trangThai.setSelectedItem("Đã khóa");
+        }
+        btn_them.setEnabled(false);
+
+
+    }//GEN-LAST:event_tbl_nhanvienMouseClicked
+
+    private void btn_suaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_suaActionPerformed
+
+        String hoTen = txt_hoTen.getText();
+        String sdt = txt_sdt.getText();
+        String email = txt_email.getText();
+        String matKhau = txt_matKhau.getText();
+        String gioiTinh = "";
+        if (txt_gioiTinh.getSelectedItem().equals("Nam")) {
+            gioiTinh = "Nam";
+        } else if (txt_gioiTinh.getSelectedItem().equals("Nữ")) {
+            gioiTinh = "Nữ";
+        } else {
+            gioiTinh = "Khác";
+        }
+        int nhom = 0;
+        if (txt_nhom.getSelectedItem().toString().equals("Quản lý")) {
+            nhom = 1;
+        }
+        int trangThai = 0;
+        if (txt_trangThai.getSelectedItem().toString().equals("Hoạt động")) {
+            trangThai = 1;
+        }
+
+        if (hoTen.equals("")) {
+            JOptionPane.showMessageDialog(this, "Họ tên không được để trông");
+            return;
+        } else if (!validate.kiemTraTen(txt_hoTen.getText())) {
+            JOptionPane.showMessageDialog(this, "Tên không được chứa số!");
+            return;
+        }
+        if (email.equals("")) {
+            JOptionPane.showMessageDialog(this, "Ko được bỏ trống email");
+            return;
+        } else if (!validate.kiemTraEmail(txt_email.getText())) {
+            JOptionPane.showMessageDialog(this, "Không đúng định dạng email");
+            return;
+        }
+        if (sdt.equals("")) {
+            JOptionPane.showMessageDialog(this, "SDT không được để trống");
+            return;
+        } else if (!validate.kiemTraSDT(sdt).equals("")) {
+            JOptionPane.showMessageDialog(this, validate.kiemTraSDT(sdt));
+            return;
+
+        }
+
+        nv.setHoTen(hoTen);
+        nv.setSoDienThoai(sdt);
+        nv.setEmail(email);
+        nv.setGioiTinh(gioiTinh);
+        nv.setNhom(nhom);
+        nv.setTrangThai(trangThai);
+        listNV.set(index, nv);
+        saveFile();
+        getData(listNV);
+        JOptionPane.showMessageDialog(this, "Chỉnh sửa nhân viên thành công");
+        reset();
+
+    }//GEN-LAST:event_btn_suaActionPerformed
+
+    private void btn_xoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_xoaActionPerformed
+        // TODO add your handling code here:
+        Integer confirm = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn xóa không?", "Xóa", 2);
+        if (confirm == JOptionPane.YES_OPTION) {
+            if (listNV.remove(nv)) {
+                saveFile();
+                getData(listNV);
+                reset();
+                JOptionPane.showMessageDialog(this, "Xóa thành công ");
+            } else {
+                JOptionPane.showMessageDialog(this, "Xóa thất bại");
+            }
+
+        }
+        
+    }//GEN-LAST:event_btn_xoaActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_sua;
+    private javax.swing.JButton btn_them;
+    private javax.swing.JButton btn_xoa;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbl_nhanvien;
+    private javax.swing.JTextField txt_email;
+    private javax.swing.JComboBox<String> txt_gioiTinh;
+    private javax.swing.JTextField txt_hoTen;
+    private javax.swing.JTextField txt_maNhanVien;
+    private javax.swing.JPasswordField txt_matKhau;
+    private javax.swing.JComboBox<String> txt_nhom;
+    private javax.swing.JTextField txt_sdt;
+    private javax.swing.JComboBox<String> txt_trangThai;
+    private javax.swing.JTextField txt_tuKhoa;
+    private javax.swing.JLabel vd_maNV;
+    // End of variables declaration//GEN-END:variables
+}

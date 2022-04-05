@@ -1,0 +1,7 @@
+SP01	Gà Khô Lá Chanh	gói	Thắng Thu	180000.0	200000.0	272
+SP02	Cốc	chiếc	Lala	10000.0	12000.0	13
+SP03	bim bim ngô	chiếc	oishii	3000.0	5000.0	86
+SP04	Bánh gạo	gói	One One	17000.0	20000.0	92
+SP05	Sữa chua nếp cẩm	hũ	Vinamilk	8000.0	9000.0	317
+SP06	Oreo	gói	Nabisco	10000.0	12000.0	2
+SP07	Bim bim bí đỏ	gói	Oishi	3000.0	5000.0	4
